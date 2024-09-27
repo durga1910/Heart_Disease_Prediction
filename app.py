@@ -13,7 +13,7 @@ with open('heart_disease_model.pkl', 'rb') as model_file:
 with open('scaler.pkl', 'rb') as scaler_file:
     scaler = pickle.load(scaler_file)
 
-# Define your PredictionForm class here
+# PredictionForm class 
 class PredictionForm(Form):
     age = FloatField('Age', validators=[InputRequired(), NumberRange(min=0, max=120)])
     sex = SelectField('Sex', choices=[('0', 'Female'), ('1', 'Male')], validators=[InputRequired()])
@@ -46,19 +46,19 @@ def predict():
             probability = model.predict_proba(scaled_features)[0][1]
             
             result = "High risk of heart disease" if prediction[0] == 1 else "Low risk of heart disease"
-            probability_percentage = probability * 100  # Convert to percentage
+            probability_percentage = probability * 100  
 
-            print(f"Prediction: {result}, Probability: {probability_percentage:.2f}%")  # Debug print
+            print(f"Prediction: {result}, Probability: {probability_percentage:.2f}%")  
 
             return render_template('result.html', 
                                    prediction=result, 
                                    probability=f"{probability_percentage:.2f}%",
-                                   form=form)  # Pass the form to the template
+                                   form=form)  
         except Exception as e:
-            print(f"Error during prediction: {str(e)}")  # Debug print
+            print(f"Error during prediction: {str(e)}")  
             return render_template('error.html', error=str(e))
     else:
-        print(f"Form validation failed: {form.errors}")  # Debug print
+        print(f"Form validation failed: {form.errors}")  
         return render_template('index.html', form=form)
 
 if __name__ == '__main__':
